@@ -27,12 +27,12 @@ public class CheckoutService {
   private BigDecimal calculateDiscountsOf(Basket basket) {
     BigDecimal discount = BigDecimal.ZERO;
     //if another discount is added, create a new class Discount and create discounts from db or by code
-    discount = discount.add(pensDiscount(basket, discount))
-        .add(tshirtDiscount(basket, discount));
+    discount = discount.add(twoGetOneFreePromotion(basket, discount))
+        .add(bulkPurchasesDiscount(basket, discount));
     return discount;
   }
 
-  private BigDecimal tshirtDiscount(Basket basket, BigDecimal discount) {
+  private BigDecimal bulkPurchasesDiscount(Basket basket, BigDecimal discount) {
     Product tshirt = new Product(new ProductId("TSHIRT"));
     long numberOfTshirts = totalProductsOf(basket, tshirt);
     if(threeOrMore(numberOfTshirts)) {
@@ -53,7 +53,7 @@ public class CheckoutService {
     return numberOfTshirts > 2;
   }
 
-  private BigDecimal pensDiscount(Basket basket, BigDecimal discount) {
+  private BigDecimal twoGetOneFreePromotion(Basket basket, BigDecimal discount) {
     Product pen = new Product(new ProductId("PEN"));
     long pens = totalProductsOf(basket, pen);
     if(moreThanTwo(pens)) {
