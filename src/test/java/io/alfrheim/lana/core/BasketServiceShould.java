@@ -4,11 +4,9 @@ import io.alfrheim.lana.IdGenerator;
 import io.alfrheim.lana.InMemoryProductTestRepository;
 import io.alfrheim.lana.core.basket.Basket;
 import io.alfrheim.lana.core.basket.BasketId;
-import io.alfrheim.lana.core.checkout.Amount;
 import io.alfrheim.lana.core.checkout.Checkout;
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.ProductId;
-import io.alfrheim.lana.core.product.Products;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,12 +35,11 @@ public class BasketServiceShould {
   private BasketRepository basketRepository;
 
   private BasketService basketService;
-  private CheckoutService checkoutService;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     MockitoAnnotations.initMocks(this);
-    checkoutService = new CheckoutService(new InMemoryProductTestRepository());
+    CheckoutService checkoutService = new CheckoutService(new InMemoryProductTestRepository());
     basketService = new BasketService(idGenerator, basketRepository, checkoutService);
   }
 

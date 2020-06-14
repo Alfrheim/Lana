@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class ProductId {
-  private String id;
+  private final String id;
 
   public ProductId(String id) {
     this.id = id;

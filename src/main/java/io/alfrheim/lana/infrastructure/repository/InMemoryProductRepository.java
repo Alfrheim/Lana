@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InMemoryProductRepository implements ProductRepository {
-  private Map<ProductId, Product> db = new HashMap<>();
+  private final Map<ProductId, Product> db = new HashMap<>();
 
   public InMemoryProductRepository() {
     Product pen = new Product(new ProductId("PEN"), new BigDecimal("5"));

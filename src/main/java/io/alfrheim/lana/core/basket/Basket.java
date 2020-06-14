@@ -3,12 +3,11 @@ package io.alfrheim.lana.core.basket;
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.Products;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Basket {
   private final BasketId basketId;
-  private Products products = new Products();
+  private final Products products = new Products();
 
   public Basket(BasketId basketId) {
     this.basketId = basketId;

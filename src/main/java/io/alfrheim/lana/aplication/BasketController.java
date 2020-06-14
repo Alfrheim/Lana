@@ -2,7 +2,6 @@ package io.alfrheim.lana.aplication;
 
 import io.alfrheim.lana.aplication.dto.BasketDTO;
 import io.alfrheim.lana.aplication.dto.CheckoutDTO;
-import io.alfrheim.lana.aplication.dto.ProductDTO;
 import io.alfrheim.lana.core.BasketService;
 import io.alfrheim.lana.core.basket.Basket;
 import io.alfrheim.lana.core.basket.BasketId;
@@ -10,7 +9,6 @@ import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.ProductId;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class Checkout {
-  private Products products = new Products();
-  private Amount amount;
+  private final Products products;
+  private final Amount amount;
 
   public Checkout(Products products, Amount amount) {
     this.products = products;

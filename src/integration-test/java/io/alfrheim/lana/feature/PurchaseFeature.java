@@ -16,7 +16,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -44,8 +43,7 @@ public class PurchaseFeature {
 	private RestTemplate restTemplate() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-		RestTemplate restTemplate = new RestTemplateBuilder().build();
-		return restTemplate;
+		return new RestTemplateBuilder().build();
 	}
 
 	@Test

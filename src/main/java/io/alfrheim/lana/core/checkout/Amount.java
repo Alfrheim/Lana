@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.math.BigDecimal;
 
 public class Amount {
-  private BigDecimal amount;
+  private final BigDecimal amount;
 
   private Amount(BigDecimal amount) {
     this.amount = amount;
