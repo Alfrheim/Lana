@@ -37,15 +37,8 @@ public class PurchaseFeature {
 	@LocalServerPort
 	private int port;
 
-	RestTemplate restTemplate = restTemplate();
+	LanaClient lanaClient = new LanaClient();
 
-	HttpHeaders headers = new HttpHeaders();
-
-	private RestTemplate restTemplate() {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-		return new RestTemplateBuilder().build();
-	}
 
 	@Test
 	public void can_purchase_different_products() throws JSONException {
@@ -53,52 +46,65 @@ public class PurchaseFeature {
 
 		String expected = "{items:[\"PEN\",\"TSHIRT\", \"MUG\"], total:{ amount: \"32.50\"}}";
 
-		ResponseEntity<BasketDTO> response = createNewBasket();
+		ResponseEntity<BasketDTO> response = lanaClient.createNewBasket();
 
-		addProduct(response.getBody().getId(), "PEN");
-		addProduct(response.getBody().getId(), "TSHIRT");
-		addProduct(response.getBody().getId(), "MUG");
+		lanaClient.addProduct(response.getBody().getId(), "PEN");
+		lanaClient.addProduct(response.getBody().getId(), "TSHIRT");
+		lanaClient.addProduct(response.getBody().getId(), "MUG");
 
-		ResponseEntity<String> checkout = checkout(response.getBody().getId());
-		ResponseEntity<String> removeBasket = removeBasket(response.getBody().getId());
+		ResponseEntity<String> checkout = lanaClient.checkout(response.getBody().getId());
+		ResponseEntity<String> removeBasket = lanaClient.removeBasket(response.getBody().getId());
 
 		JSONAssert.assertEquals(expected, checkout.getBody(), false);
 		assertTrue(removeBasket.getStatusCode().is2xxSuccessful());
 	}
 
-	private ResponseEntity<String> removeBasket(String id) {
-		HttpEntity<String> entity;
-		entity = new HttpEntity<>(null, headers);
-		return restTemplate.exchange(
-				createURLWithPort(String.format("/baskets/%s",id)),
-				HttpMethod.DELETE, entity, String.class);
-	}
+	public class LanaClient {
 
-	private ResponseEntity<String> checkout(String id) {
-		HttpEntity<String> entity;
-		entity = new HttpEntity<>(null, headers);
-		return restTemplate.exchange(
-		createURLWithPort(String.format("/baskets/%s/checkout",id)),
-		HttpMethod.POST, entity, String.class);
-	}
+		RestTemplate restTemplate = restTemplate();
 
-	private BasketDTO addProduct(String basketId, String product) {
-		HttpEntity<String> entity;
-		entity = new HttpEntity<>(null, headers);
-		return restTemplate.exchange(
-				createURLWithPort(String.format("/baskets/%s/addProduct/%s", basketId, product)),
-				HttpMethod.POST, entity, BasketDTO.class).getBody();
-	}
+		HttpHeaders headers = new HttpHeaders();
 
-	private ResponseEntity<BasketDTO> createNewBasket() {
-		HttpEntity<String> entity = new HttpEntity<>(null, headers);
-		return restTemplate.exchange(
-		createURLWithPort("/baskets/new"),
-		HttpMethod.POST, entity, BasketDTO.class);
-	}
+		private RestTemplate restTemplate() {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+			return new RestTemplateBuilder().build();
+		}
 
-	private String createURLWithPort(String uri) {
-		return "http://localhost:" + port + uri;
+		public ResponseEntity<String> removeBasket(String id) {
+			HttpEntity<String> entity;
+			entity = new HttpEntity<>(null, headers);
+			return restTemplate.exchange(
+					createURLWithPort(String.format("/baskets/%s",id)),
+					HttpMethod.DELETE, entity, String.class);
+		}
+
+		public ResponseEntity<String> checkout(String id) {
+			HttpEntity<String> entity;
+			entity = new HttpEntity<>(null, headers);
+			return restTemplate.exchange(
+					createURLWithPort(String.format("/baskets/%s/checkout",id)),
+					HttpMethod.POST, entity, String.class);
+		}
+
+		public BasketDTO addProduct(String basketId, String product) {
+			HttpEntity<String> entity;
+			entity = new HttpEntity<>(null, headers);
+			return restTemplate.exchange(
+					createURLWithPort(String.format("/baskets/%s/addProduct/%s", basketId, product)),
+					HttpMethod.POST, entity, BasketDTO.class).getBody();
+		}
+
+		public ResponseEntity<BasketDTO> createNewBasket() {
+			HttpEntity<String> entity = new HttpEntity<>(null, headers);
+			return restTemplate.exchange(
+					createURLWithPort("/baskets/new"),
+					HttpMethod.POST, entity, BasketDTO.class);
+		}
+
+		private String createURLWithPort(String uri) {
+			return "http://localhost:" + port + uri;
+		}
 	}
 
 }
