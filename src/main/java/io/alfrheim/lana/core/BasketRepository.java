@@ -9,4 +9,6 @@ public interface BasketRepository {
   Basket getBasketFrom(BasketId basketId);
 
   void save(Basket basket);
+
+  void remove(BasketId basketId);
 }

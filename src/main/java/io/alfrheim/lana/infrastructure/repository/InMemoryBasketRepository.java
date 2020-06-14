@@ -23,4 +23,9 @@ public class InMemoryBasketRepository implements BasketRepository {
   public void save(Basket basket) {
     db.replace(basket.id(), basket);
   }
+
+  @Override
+  public void remove(BasketId basketId) {
+    db.remove(basketId);
+  }
 }

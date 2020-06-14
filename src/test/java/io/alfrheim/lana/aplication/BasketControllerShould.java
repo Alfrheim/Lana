@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 public class BasketControllerShould {
 
@@ -74,6 +75,13 @@ public class BasketControllerShould {
     CheckoutDTO result = basketController.checkout(ID);
 
     assertThat(result).isEqualTo(aCheckout());
+  }
+
+  @Test
+  public void remove_basket() {
+    basketController.delete(ID);
+
+    verify(basketService).remove(BasketId.from(ID));
   }
 
   private CheckoutDTO aCheckout() {

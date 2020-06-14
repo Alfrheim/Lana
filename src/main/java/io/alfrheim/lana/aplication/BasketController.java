@@ -7,6 +7,7 @@ import io.alfrheim.lana.core.basket.Basket;
 import io.alfrheim.lana.core.basket.BasketId;
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.ProductId;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +35,10 @@ public class BasketController {
   @PostMapping("/baskets/{id}/checkout")
   public CheckoutDTO checkout(@PathVariable String id) {
     return CheckoutDTO.from(basketService.checkout(BasketId.from(id)));
+  }
+
+  @DeleteMapping("/baskets/{id}")
+  public void delete(@PathVariable String id) {
+    basketService.remove(BasketId.from(id));
   }
 }

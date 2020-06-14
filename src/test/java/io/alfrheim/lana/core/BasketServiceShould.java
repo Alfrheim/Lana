@@ -101,6 +101,13 @@ public class BasketServiceShould {
     assertThat(checkout.amountAsBigDecimal()).isEqualTo(new BigDecimal("45"));
   }
 
+  @Test
+  public void remove_basket() {
+    basketService.remove(BasketId.from(BASKET_ID));
+
+    verify(basketRepository).remove(BasketId.from(BASKET_ID));
+  }
+
   private Basket aBasketWithMug() {
     Basket result = new Basket(BasketId.from(BASKET_ID));
     result.add(MUG);

@@ -38,4 +38,8 @@ public class BasketService {
     Basket basket = basketRepository.getBasketFrom(basketId);
     return checkoutService.createFrom(basket);
   }
+
+  public void remove(BasketId basketId) {
+    basketRepository.remove(basketId);
+  }
 }

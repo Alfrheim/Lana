@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
@@ -59,8 +60,18 @@ public class PurchaseFeature {
 		addProduct(response.getBody().getId(), "MUG");
 
 		ResponseEntity<String> checkout = checkout(response.getBody().getId());
+		ResponseEntity<String> removeBasket = removeBasket(response.getBody().getId());
 
 		JSONAssert.assertEquals(expected, checkout.getBody(), false);
+		assertTrue(removeBasket.getStatusCode().is2xxSuccessful());
+	}
+
+	private ResponseEntity<String> removeBasket(String id) {
+		HttpEntity<String> entity;
+		entity = new HttpEntity<>(null, headers);
+		return restTemplate.exchange(
+				createURLWithPort(String.format("/baskets/%s",id)),
+				HttpMethod.DELETE, entity, String.class);
 	}
 
 	private ResponseEntity<String> checkout(String id) {
