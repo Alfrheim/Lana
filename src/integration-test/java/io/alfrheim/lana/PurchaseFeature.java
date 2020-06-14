@@ -70,7 +70,7 @@ public class PurchaseFeature {
 		HttpEntity<String> entity;
 		entity = new HttpEntity<>(null, headers);
 		return restTemplate.exchange(
-		createURLWithPort("/basket/checkout"),
+		createURLWithPort("/baskets/checkout"),
 		HttpMethod.POST, entity, String.class);
 	}
 
@@ -78,14 +78,14 @@ public class PurchaseFeature {
 		HttpEntity<String> entity;
 		entity = new HttpEntity<>(String.format("{product:\"%s\"}", product), headers);
 		return restTemplate.exchange(
-				createURLWithPort(String.format("/basket/%s/addProduct", basketId)),
+				createURLWithPort(String.format("/baskets/%s/addProduct", basketId)),
 				HttpMethod.POST, entity, BasketDTO.class).getBody();
 	}
 
 	private ResponseEntity<BasketDTO> createNewBasket() {
 		HttpEntity<String> entity = new HttpEntity<>(null, headers);
 		return restTemplate.exchange(
-		createURLWithPort("/basket/new"),
+		createURLWithPort("/baskets/new"),
 		HttpMethod.POST, entity, BasketDTO.class);
 	}
 

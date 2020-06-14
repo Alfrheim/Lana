@@ -19,12 +19,12 @@ public class BasketController {
     this.basketService = basketService;
   }
 
-  @PostMapping("/basket/new")
+  @PostMapping("/baskets/new")
   public BasketDTO create() {
     return BasketDTO.from(basketService.create());
   }
 
-  @PostMapping("/basket/{id}/addProduct")
+  @PostMapping("/baskets/{id}/addProduct")
   public BasketDTO addProduct(@PathVariable String id, @RequestBody String product) {
     Basket basket = basketService.addProduct(BasketId.from(id), new Product(product));
     return BasketDTO.from(basket);
