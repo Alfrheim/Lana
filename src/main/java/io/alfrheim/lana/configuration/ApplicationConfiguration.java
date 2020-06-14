@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.alfrheim.lana.IdGenerator;
 import io.alfrheim.lana.core.BasketRepository;
 import io.alfrheim.lana.core.BasketService;
+import io.alfrheim.lana.core.CheckoutService;
+import io.alfrheim.lana.core.ProductRepository;
 import io.alfrheim.lana.infrastructure.repository.InMemoryBasketRepository;
+import io.alfrheim.lana.infrastructure.repository.InMemoryProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -24,8 +27,19 @@ public class ApplicationConfiguration {
   }
 
   @Bean
-  public BasketService basketService(IdGenerator idGenerator, BasketRepository basketRepository) {
-    return new BasketService(idGenerator, basketRepository);
+  public ProductRepository productRepository() {
+    return new InMemoryProductRepository();
+  }
+
+  @Bean
+  public BasketService basketService(IdGenerator idGenerator, BasketRepository basketRepository,
+                                     CheckoutService checkoutService) {
+    return new BasketService(idGenerator, basketRepository, checkoutService);
+  }
+
+  @Bean
+  public CheckoutService checkoutService(ProductRepository productRepository) {
+    return new CheckoutService(productRepository);
   }
 
   @Bean

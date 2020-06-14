@@ -1,23 +1,16 @@
-package io.alfrheim.lana.aplication.dto;
+package io.alfrheim.lana.core.product;
 
-import io.alfrheim.lana.core.product.Product;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class ProductDTO {
+public class ProductId {
   private String id;
 
-  public static ProductDTO from(Product product) {
-    ProductDTO result = new ProductDTO();
-    result.setId(product.idAsString());
-    return result;
-  }
-
-  public void setId(String id) {
+  public ProductId(String id) {
     this.id = id;
   }
 
-  public String getId() {
+  public String asString() {
     return id;
   }
 
@@ -31,10 +24,10 @@ public class ProductDTO {
       return false;
     }
 
-    ProductDTO that = (ProductDTO) o;
+    ProductId productId = (ProductId) o;
 
     return new EqualsBuilder()
-        .append(id, that.id)
+        .append(id, productId.id)
         .isEquals();
   }
 

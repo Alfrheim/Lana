@@ -3,6 +3,7 @@ package io.alfrheim.lana.core.basket;
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.Products;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Basket {
@@ -51,5 +52,9 @@ public class Basket {
 
   public List<Product> productsAsList() {
     return products.asList();
+  }
+
+  public Products products() {
+    return products;
   }
 }

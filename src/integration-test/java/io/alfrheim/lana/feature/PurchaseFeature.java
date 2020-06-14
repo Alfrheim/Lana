@@ -16,6 +16,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -54,31 +55,29 @@ public class PurchaseFeature {
 		String expected = "{items:[\"PEN\",\"TSHIRT\", \"MUG\"], total:{ amount: \"32.50\"}}";
 
 		ResponseEntity<BasketDTO> response = createNewBasket();
-		HttpEntity<String> entity;
-
 
 		addProduct(response.getBody().getId(), "PEN");
 		addProduct(response.getBody().getId(), "TSHIRT");
 		addProduct(response.getBody().getId(), "MUG");
 
-		ResponseEntity<String> checkout = checkout();
+		ResponseEntity<String> checkout = checkout(response.getBody().getId());
 
 		JSONAssert.assertEquals(expected, checkout.getBody(), false);
 	}
 
-	private ResponseEntity<String> checkout() {
+	private ResponseEntity<String> checkout(String id) {
 		HttpEntity<String> entity;
 		entity = new HttpEntity<>(null, headers);
 		return restTemplate.exchange(
-		createURLWithPort("/baskets/checkout"),
+		createURLWithPort(String.format("/baskets/%s/checkout",id)),
 		HttpMethod.POST, entity, String.class);
 	}
 
 	private BasketDTO addProduct(String basketId, String product) {
 		HttpEntity<String> entity;
-		entity = new HttpEntity<>(String.format("{product:\"%s\"}", product), headers);
+		entity = new HttpEntity<>(null, headers);
 		return restTemplate.exchange(
-				createURLWithPort(String.format("/baskets/%s/addProduct", basketId)),
+				createURLWithPort(String.format("/baskets/%s/addProduct/%s", basketId, product)),
 				HttpMethod.POST, entity, BasketDTO.class).getBody();
 	}
 

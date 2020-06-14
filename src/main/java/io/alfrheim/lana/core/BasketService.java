@@ -3,15 +3,18 @@ package io.alfrheim.lana.core;
 import io.alfrheim.lana.IdGenerator;
 import io.alfrheim.lana.core.basket.Basket;
 import io.alfrheim.lana.core.basket.BasketId;
+import io.alfrheim.lana.core.checkout.Checkout;
 import io.alfrheim.lana.core.product.Product;
 
 public class BasketService {
   private final IdGenerator idGenerator;
   private final BasketRepository basketRepository;
+  private final CheckoutService checkoutService;
 
-  public BasketService(IdGenerator idGenerator, BasketRepository basketRepository) {
+  public BasketService(IdGenerator idGenerator, BasketRepository basketRepository, CheckoutService checkoutService) {
     this.idGenerator = idGenerator;
     this.basketRepository = basketRepository;
+    this.checkoutService = checkoutService;
   }
 
   public Basket create() {
@@ -31,4 +34,8 @@ public class BasketService {
     return basket;
   }
 
+  public Checkout checkout(BasketId basketId) {
+    Basket basket = basketRepository.getBasketFrom(basketId);
+    return checkoutService.createFrom(basket);
+  }
 }

@@ -3,11 +3,31 @@ package io.alfrheim.lana.core.product;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class Product {
-  private final String id;
+import java.math.BigDecimal;
 
-  public Product(String id) {
+public class Product {
+  private final ProductId id;
+  private BigDecimal price;
+
+  public Product(ProductId id) {
     this.id = id;
+  }
+
+  public Product(ProductId id, BigDecimal price) {
+    this.id = id;
+    this.price = price;
+  }
+
+  public String idAsString() {
+    return this.id.asString();
+  }
+
+  public ProductId id() {
+    return this.id;
+  }
+
+  public BigDecimal priceAsBigDecimal() {
+    return this.price;
   }
 
   @Override
@@ -24,6 +44,7 @@ public class Product {
 
     return new EqualsBuilder()
         .append(id, product.id)
+        .append(price, product.price)
         .isEquals();
   }
 
@@ -31,10 +52,7 @@ public class Product {
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
         .append(id)
+        .append(price)
         .toHashCode();
-  }
-
-  public String idAsString() {
-    return this.id;
   }
 }
