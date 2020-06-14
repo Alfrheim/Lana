@@ -29,6 +29,7 @@ public class BasketServiceShould {
   private static final String BASKET_ID = UUID.randomUUID().toString();
   private static final Basket BASKET = new Basket(BasketId.from(BASKET_ID));
   public static final Product PEN = new Product(new ProductId("PEN"));
+  public static final Product TSHIRT = new Product(new ProductId("TSHIRT"));
   public static final Product MUG = new Product(new ProductId("MUG"));
   @Mock
   private IdGenerator idGenerator;
@@ -77,7 +78,7 @@ public class BasketServiceShould {
   }
 
   @Test
-  public void return_checkout_with_discounts() {
+  public void return_checkout_with_products_50_percent_discount() {
     Basket basket = new Basket(BasketId.from(BASKET_ID));
     basket.add(PEN);
     basket.add(PEN);
@@ -87,6 +88,20 @@ public class BasketServiceShould {
 
     assertThat(checkout.productsAsList()).contains(PEN, PEN);
     assertThat(checkout.amountAsBigDecimal()).isEqualTo(new BigDecimal("5"));
+  }
+
+  @Test
+  public void return_checkout_with_products_25_percent_for_each_item_discount() {
+    Basket basket = new Basket(BasketId.from(BASKET_ID));
+    basket.add(TSHIRT);
+    basket.add(TSHIRT);
+    basket.add(TSHIRT);
+    given(basketRepository.getBasketFrom(BasketId.from(BASKET_ID))).willReturn(basket);
+
+    Checkout checkout = basketService.checkout(BasketId.from(BASKET_ID));
+
+    assertThat(checkout.productsAsList()).contains(TSHIRT, TSHIRT, TSHIRT);
+    assertThat(checkout.amountAsBigDecimal()).isEqualTo(new BigDecimal("45"));
   }
 
   private Basket aBasketWithMug() {
