@@ -1,24 +1,19 @@
 package io.alfrheim.lana.feature;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.alfrheim.lana.IdGenerator;
 import io.alfrheim.lana.LanaApplication;
 import io.alfrheim.lana.aplication.dto.BasketDTO;
+import io.alfrheim.lana.client.LanaClient;
 import org.json.JSONException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
@@ -37,8 +32,13 @@ public class PurchaseFeature {
 	@LocalServerPort
 	private int port;
 
-	LanaClient lanaClient = new LanaClient();
+	LanaClient lanaClient;
 
+
+	@Before
+	public void setUp() throws Exception {
+		lanaClient = new LanaClient("http://localhost:", port);
+	}
 
 	@Test
 	public void can_purchase_different_products() throws JSONException {
@@ -57,54 +57,6 @@ public class PurchaseFeature {
 
 		JSONAssert.assertEquals(expected, checkout.getBody(), false);
 		assertTrue(removeBasket.getStatusCode().is2xxSuccessful());
-	}
-
-	public class LanaClient {
-
-		RestTemplate restTemplate = restTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-
-		private RestTemplate restTemplate() {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-			return new RestTemplateBuilder().build();
-		}
-
-		public ResponseEntity<String> removeBasket(String id) {
-			HttpEntity<String> entity;
-			entity = new HttpEntity<>(null, headers);
-			return restTemplate.exchange(
-					createURLWithPort(String.format("/baskets/%s",id)),
-					HttpMethod.DELETE, entity, String.class);
-		}
-
-		public ResponseEntity<String> checkout(String id) {
-			HttpEntity<String> entity;
-			entity = new HttpEntity<>(null, headers);
-			return restTemplate.exchange(
-					createURLWithPort(String.format("/baskets/%s/checkout",id)),
-					HttpMethod.POST, entity, String.class);
-		}
-
-		public BasketDTO addProduct(String basketId, String product) {
-			HttpEntity<String> entity;
-			entity = new HttpEntity<>(null, headers);
-			return restTemplate.exchange(
-					createURLWithPort(String.format("/baskets/%s/addProduct/%s", basketId, product)),
-					HttpMethod.POST, entity, BasketDTO.class).getBody();
-		}
-
-		public ResponseEntity<BasketDTO> createNewBasket() {
-			HttpEntity<String> entity = new HttpEntity<>(null, headers);
-			return restTemplate.exchange(
-					createURLWithPort("/baskets/new"),
-					HttpMethod.POST, entity, BasketDTO.class);
-		}
-
-		private String createURLWithPort(String uri) {
-			return "http://localhost:" + port + uri;
-		}
 	}
 
 }
