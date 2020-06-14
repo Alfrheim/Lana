@@ -13,4 +13,14 @@ public class InMemoryBasketRepository implements BasketRepository {
   public void add(Basket basket) {
     db.put(basket.id(), basket);
   }
+
+  @Override
+  public Basket getBasketFrom(BasketId basketId) {
+    return db.get(basketId);
+  }
+
+  @Override
+  public void save(Basket basket) {
+    db.replace(basket.id(), basket);
+  }
 }

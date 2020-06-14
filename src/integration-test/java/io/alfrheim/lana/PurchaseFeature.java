@@ -1,5 +1,7 @@
 package io.alfrheim.lana.feature;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.alfrheim.lana.IdGenerator;
 import io.alfrheim.lana.LanaApplication;
 import io.alfrheim.lana.aplication.dto.BasketDTO;
@@ -39,6 +41,8 @@ public class PurchaseFeature {
 	HttpHeaders headers = new HttpHeaders();
 
 	private RestTemplate restTemplate() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		RestTemplate restTemplate = new RestTemplateBuilder().build();
 		return restTemplate;
 	}
@@ -72,9 +76,9 @@ public class PurchaseFeature {
 
 	private BasketDTO addProduct(String basketId, String product) {
 		HttpEntity<String> entity;
-		entity = new HttpEntity<>(String.format("{id:\"%s\", new_product:\"%s\"}", basketId, product), headers);
+		entity = new HttpEntity<>(String.format("{product:\"%s\"}", product), headers);
 		return restTemplate.exchange(
-				createURLWithPort("/basket/addProduct"),
+				createURLWithPort(String.format("/basket/%s/addProduct", basketId)),
 				HttpMethod.POST, entity, BasketDTO.class).getBody();
 	}
 

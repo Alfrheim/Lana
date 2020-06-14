@@ -1,7 +1,13 @@
 package io.alfrheim.lana.core.basket;
 
+import io.alfrheim.lana.core.product.Product;
+import io.alfrheim.lana.core.product.Products;
+
+import java.util.List;
+
 public class Basket {
   private final BasketId basketId;
+  private Products products = new Products();
 
   public Basket(BasketId basketId) {
     this.basketId = basketId;
@@ -37,5 +43,13 @@ public class Basket {
 
   public BasketId id() {
     return basketId;
+  }
+
+  public void add(Product product) {
+    products.add(product);
+  }
+
+  public List<Product> productsAsList() {
+    return products.asList();
   }
 }
