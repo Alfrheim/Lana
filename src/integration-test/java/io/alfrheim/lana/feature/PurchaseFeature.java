@@ -5,6 +5,7 @@ import io.alfrheim.lana.LanaApplication;
 import io.alfrheim.lana.aplication.dto.BasketDTO;
 import io.alfrheim.lana.client.LanaClient;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,14 +47,16 @@ public class PurchaseFeature {
 
 		String expected = "{items:[\"PEN\",\"TSHIRT\", \"MUG\"], total:{ amount: \"32.50\"}}";
 
-		ResponseEntity<BasketDTO> response = lanaClient.createNewBasket();
+		ResponseEntity<String> response = lanaClient.createNewBasket();
+		JSONObject jsonObject = new JSONObject(response.getBody());
+		String basketId = jsonObject.getString("id");
 
-		lanaClient.addProduct(response.getBody().getId(), "PEN");
-		lanaClient.addProduct(response.getBody().getId(), "TSHIRT");
-		lanaClient.addProduct(response.getBody().getId(), "MUG");
+		lanaClient.addProduct(basketId, "PEN");
+		lanaClient.addProduct(basketId, "TSHIRT");
+		lanaClient.addProduct(basketId, "MUG");
 
-		ResponseEntity<String> checkout = lanaClient.checkout(response.getBody().getId());
-		ResponseEntity<String> removeBasket = lanaClient.removeBasket(response.getBody().getId());
+		ResponseEntity<String> checkout = lanaClient.checkout(basketId);
+		ResponseEntity<Void> removeBasket = lanaClient.removeBasket(basketId);
 
 		JSONAssert.assertEquals(expected, checkout.getBody(), false);
 		assertTrue(removeBasket.getStatusCode().is2xxSuccessful());

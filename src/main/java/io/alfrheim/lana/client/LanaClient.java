@@ -2,7 +2,6 @@ package io.alfrheim.lana.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.alfrheim.lana.aplication.dto.BasketDTO;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,12 +31,12 @@ public class LanaClient {
           return new RestTemplateBuilder().build();
       }
 
-      public ResponseEntity<String> removeBasket(String id) {
+      public ResponseEntity<Void> removeBasket(String id) {
           HttpEntity<String> entity;
           entity = new HttpEntity<>(null, headers);
           return restTemplate.exchange(
                   createURLWithPort(String.format("/baskets/%s",id)),
-                  HttpMethod.DELETE, entity, String.class);
+                  HttpMethod.DELETE, entity, Void.class);
       }
 
       public ResponseEntity<String> checkout(String id) {
@@ -48,19 +47,19 @@ public class LanaClient {
                   HttpMethod.POST, entity, String.class);
       }
 
-      public BasketDTO addProduct(String basketId, String product) {
+      public ResponseEntity<String> addProduct(String basketId, String product) {
           HttpEntity<String> entity;
           entity = new HttpEntity<>(null, headers);
           return restTemplate.exchange(
                   createURLWithPort(String.format("/baskets/%s/addProduct/%s", basketId, product)),
-                  HttpMethod.POST, entity, BasketDTO.class).getBody();
+                  HttpMethod.POST, entity, String.class);
       }
 
-      public ResponseEntity<BasketDTO> createNewBasket() {
+      public ResponseEntity<String> createNewBasket() {
           HttpEntity<String> entity = new HttpEntity<>(null, headers);
           return restTemplate.exchange(
                   createURLWithPort("/baskets/new"),
-                  HttpMethod.POST, entity, BasketDTO.class);
+                  HttpMethod.POST, entity, String.class);
       }
 
       private String createURLWithPort(String uri) {
