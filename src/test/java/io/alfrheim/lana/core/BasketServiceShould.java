@@ -7,6 +7,7 @@ import io.alfrheim.lana.core.basket.BasketId;
 import io.alfrheim.lana.core.checkout.Checkout;
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.ProductId;
+import io.alfrheim.lana.core.repository.BasketRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

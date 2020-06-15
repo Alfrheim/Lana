@@ -5,6 +5,7 @@ import io.alfrheim.lana.core.basket.Basket;
 import io.alfrheim.lana.core.basket.BasketId;
 import io.alfrheim.lana.core.checkout.Checkout;
 import io.alfrheim.lana.core.product.Product;
+import io.alfrheim.lana.core.repository.BasketRepository;
 
 public class BasketService {
   private final IdGenerator idGenerator;

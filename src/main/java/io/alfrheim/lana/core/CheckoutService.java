@@ -5,6 +5,7 @@ import io.alfrheim.lana.core.checkout.Amount;
 import io.alfrheim.lana.core.checkout.Checkout;
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.ProductId;
+import io.alfrheim.lana.core.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,4 +1,4 @@
-package io.alfrheim.lana.core;
+package io.alfrheim.lana.core.repository;
 
 import io.alfrheim.lana.core.basket.Basket;
 import io.alfrheim.lana.core.basket.BasketId;

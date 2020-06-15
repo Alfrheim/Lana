@@ -1,6 +1,6 @@
 package io.alfrheim.lana.infrastructure.repository;
 
-import io.alfrheim.lana.core.BasketRepository;
+import io.alfrheim.lana.core.repository.BasketRepository;
 import io.alfrheim.lana.core.basket.Basket;
 import io.alfrheim.lana.core.basket.BasketId;
 

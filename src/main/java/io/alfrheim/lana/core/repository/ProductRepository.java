@@ -1,4 +1,4 @@
-package io.alfrheim.lana.core;
+package io.alfrheim.lana.core.repository;
 
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.ProductId;

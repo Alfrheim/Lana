@@ -1,6 +1,6 @@
 package io.alfrheim.lana.infrastructure.repository;
 
-import io.alfrheim.lana.core.ProductRepository;
+import io.alfrheim.lana.core.repository.ProductRepository;
 import io.alfrheim.lana.core.product.Product;
 import io.alfrheim.lana.core.product.ProductId;
 
