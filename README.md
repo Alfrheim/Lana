@@ -65,3 +65,20 @@ Examples:
 - Thread-safety
 - Clear scalability
 
+How to run
+----------
+
+**To run local**
+- ./mvnw spring-boot:run
+or
+- ./mvnw package && java -jar target/*.jar
+
+**To run in docker**
+- ./mvnw package
+- docker build -t alfrheimio/lana . 
+- docker run -p 8080:8080 alfrheimio/lana 
+
+**Documentation**
+
+To check the documentation you can see (once the server is up):
+- http://localhost:8080/swagger-ui.html#/

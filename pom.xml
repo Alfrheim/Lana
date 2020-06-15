@@ -77,6 +77,11 @@
 
 	<build>
 		<plugins>
+			<!-- uberjar -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -105,6 +110,7 @@
 					</execution>
 				</executions>
 			</plugin>
+            <!-- configure test packages -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
